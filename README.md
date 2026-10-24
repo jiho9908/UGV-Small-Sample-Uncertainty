@@ -28,5 +28,3 @@ The `results/` directory contains:
 - `figure_04.pdf` and `figure_04.png`: interval widths and CP–Point policy distances. Their data and 95% Monte Carlo intervals are in `table_05_sample_size.csv`.
 
 CSV values retain computational precision. Tables I–II are specified by the input constants in the script. `reference_results.zip` contains the default-run outputs; extract it separately when inspecting them.
-
-The real-world inputs are the aggregate TurtleBot 2 outcomes reported by Wang et al., *Physical Attacks on Robot Navigation Systems* (reference [36] in the paper). Model definitions and experimental interpretation are given in the paper.

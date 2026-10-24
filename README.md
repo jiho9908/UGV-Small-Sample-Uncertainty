@@ -150,7 +150,3 @@ CP-P considers attacker responses that can be optimal under admissible rectangul
 The hard budget restricts which complete defense configurations may receive positive probability. It is not an expected-cost budget. The reduced real-world case uses the representative strict-deterrence policy `x2=tau+0.001` where applicable. Its upper-payoff and potential-response values are evaluated under the same CP95 intervals for the response comparison.
 
 Mission lower values and defense choices are conditional on the specified graph, costs, budget, and attacker model. The real-world case uses aggregate end-to-end counts; the multistage propagation experiments use synthetic data. Costs are normalized scenario parameters.
-
-## Citation
-
-Bibliographic information for the accompanying paper is provided in `CITATION.bib`.

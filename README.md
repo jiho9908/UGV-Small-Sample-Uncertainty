@@ -16,7 +16,7 @@ The default run uses seed `1` and `1000` repetitions with the experiment setting
 The output directory must be new or empty. To save results to a different directory:
 
 ```bash
-python ugv_mission_impact_evaluation.py --output reproduced_results
+python ugv_mission_impact_evaluation.py --output results
 ```
 
 ## Results

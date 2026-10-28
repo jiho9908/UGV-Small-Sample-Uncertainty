@@ -28,12 +28,4 @@ python ugv_mission_impact_evaluation.py --output my_results
 | `test_policy_optimization.py` | Analytical boundary cases and independent numerical checks. |
 | `requirements.txt` | Pinned package versions. |
 
-## Results
-
-- `table_03_*.csv` through `table_11_*.csv`: numerical results for Tables III–XI. Table IV has separate files for panels (a) and (b).
-- `text_results.csv`: numerical comparisons for the evaluation text, identified by section and quantity.
-- `figure_04.pdf` and `figure_04.png`: Fig. 4. The plotted values and 95% Monte Carlo intervals are also in `table_05_sample_size.csv`.
-- `optimization_summary.csv`: counts of completed upper-payoff and potential-response solves, maximum observed objective gaps, and numerical tolerances. This file is written after all experiments finish successfully.
-- `run_config.json`: experiment settings, dependency versions, and source-file SHA-256 hashes for the run.
-
 CSV files contain unrounded numerical values. The settings in Tables I–II are defined by the input constants. All outputs are computed during execution; the package does not require result files as inputs.

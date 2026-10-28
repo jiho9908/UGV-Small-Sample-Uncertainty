@@ -84,7 +84,7 @@ def evaluate_policy(policy, mission_values, attack_costs=ATTACK_COSTS,
                     defense_costs=DEFENSE_COSTS, lambda_attack=LAMBDA_ATTACK,
                     lambda_defense=LAMBDA_DEFENSE,
                     best_response_tolerance=BEST_RESPONSE_TOLERANCE):
-    """Evaluate upper attacker payoffs; ties minimize defender mission utility."""
+
     values = np.asarray(mission_values, dtype=float)
     policy = _policy_vector(policy, values.shape[0])
     mission = policy @ values
@@ -101,7 +101,7 @@ def evaluate_potential_policy(policy, mission_lower, mission_upper,
                               attack_costs=ATTACK_COSTS, defense_costs=DEFENSE_COSTS,
                               lambda_attack=LAMBDA_ATTACK,
                               lambda_defense=LAMBDA_DEFENSE):
-    """Evaluate all attacks that can be best responses in a rectangular game."""
+
     policy = _policy_vector(policy, np.asarray(mission_lower).shape[0])
     lower, upper = policy @ mission_lower, policy @ mission_upper
     ac = lambda_attack * np.asarray(attack_costs)
@@ -131,7 +131,6 @@ def _lp(c, rows, limits, bounds, n_defenses):
 
 
 def _fraction_solve(rows, rhs):
-    """Solve a small square system using exact rational arithmetic."""
     n = len(rhs)
     a = [list(row) + [b] for row, b in zip(rows, rhs)]
     for col in range(n):
@@ -149,13 +148,6 @@ def _fraction_solve(rows, rhs):
 
 
 def _exact_interior(weak_a, weak_b, strict_a, strict_b, feasible):
-    """Resolve degenerate strict feasibility for the small experiment games.
-
-    A bounded closed polytope has a point satisfying every strict inequality
-    exactly when each one is strict at some vertex. Averaging these witnesses
-    gives an interior point. Fractions represent the supplied floating-point
-    coefficients exactly.
-    """
     indices = np.flatnonzero(feasible)
     m = len(indices)
     if m > 3:
@@ -187,7 +179,6 @@ def _exact_interior(weak_a, weak_b, strict_a, strict_b, feasible):
 
 def _region_solution(pieces, weak_a, weak_b, strict_a, strict_b, feasible,
                      value_tolerance):
-    """Bound a response region and construct policies within a value budget."""
     m = len(feasible)
     pieces = np.asarray(pieces, dtype=float).reshape(-1, m)
     weak_a = np.asarray(weak_a, dtype=float).reshape(-1, m)
@@ -210,7 +201,6 @@ def _region_solution(pieces, weak_a, weak_b, strict_a, strict_b, feasible,
     if np.min(strict_b - strict_a @ policies[0]) > 4 * BEST_RESPONSE_TOLERANCE:
         return bound, policies
 
-    # Find a feasible interior point using row-scaled strict inequalities.
     scales = np.max(np.abs(strict_a[:, feasible] - strict_b[:, None]), axis=1)
     interior_rows = [np.r_[row, 0.] for row in weak_a]
     interior_rows.extend(np.r_[row / scale, 1.] for row, scale in zip(strict_a, scales))
@@ -224,7 +214,6 @@ def _region_solution(pieces, weak_a, weak_b, strict_a, strict_b, feasible,
         inside = np.asarray(interior.x[:m])
     policies.append(inside)
 
-    # Construct candidate policies within the allowed objective loss.
     for loss_fraction in (.5, .95):
         near_rows = [np.r_[row, 0.] for row in weak_a]
         near_rows.extend(np.r_[row, 1.] for row in strict_a)
@@ -271,12 +260,7 @@ def optimize_policy(mission_lower, attack_costs=ATTACK_COSTS,
                     defense_costs=DEFENSE_COSTS, budget=BUDGET,
                     lambda_attack=LAMBDA_ATTACK, lambda_defense=LAMBDA_DEFENSE,
                     value_tolerance=DEFAULT_VALUE_TOLERANCE):
-    """Select an epsilon-optimal policy for the upper-payoff response rule.
-
-    On an attacker-payoff tie, an attack with a higher scaled attack cost has
-    lower mission utility. Such alternatives require a strict inequality;
-    alternatives with equal or lower costs allow a weak inequality.
-    """
+                        
     _value_tolerance(value_tolerance)
     values, ac, dc, feasible = _game_inputs(
         mission_lower, attack_costs, defense_costs, budget, lambda_attack, lambda_defense)
@@ -306,12 +290,7 @@ def select_potential_policy(mission_lower, mission_upper, attack_costs=ATTACK_CO
                             defense_costs=DEFENSE_COSTS, budget=BUDGET,
                             lambda_attack=LAMBDA_ATTACK, lambda_defense=LAMBDA_DEFENSE,
                             value_tolerance=DEFAULT_VALUE_TOLERANCE):
-    """Select an epsilon-optimal policy over potential best responses (CP-P).
 
-    Attack j is retained when A_j^+ >= max_k A_k^- and excluded only when
-    some witness k satisfies A_j^+ < A_k^-. Each nonempty response set and
-    its possible exclusion witnesses are enumerated, including boundary ties.
-    """
     _value_tolerance(value_tolerance)
     lower, ac, dc, feasible = _game_inputs(
         mission_lower, attack_costs, defense_costs, budget, lambda_attack, lambda_defense)
